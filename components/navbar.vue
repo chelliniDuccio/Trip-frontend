@@ -65,7 +65,7 @@ const goHome = () => {
 }
 
 .logo {
-  height: 50px; /* Regola l'altezza come preferisci */
+  height: 60px; /* Regola l'altezza come preferisci */
   width: auto; /* Mantiene le proporzioni */
 }
 </style>

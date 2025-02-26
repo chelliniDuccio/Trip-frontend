@@ -9,7 +9,7 @@ const props = defineProps({
 // Calcola lo sfondo della card con la bandiera
 const backgroundStyle = computed(() => ({
   backgroundImage: props.travel?.Country?.Iso
-    ? `url(https://flagcdn.com/w320/${props.travel.Country.Iso.toLowerCase()}.png)`
+    ? `url(${props.travel.Country.Flag})`
     : "none",
   backgroundSize: "cover",
   backgroundPosition: "center",
@@ -19,8 +19,11 @@ const backgroundStyle = computed(() => ({
   left: 0,
   width: "100%",
   height: "100%",
-  zIndex: 0,
 }));
+
+const redirectToTravel = (id) => {
+  window.location.href = `/travel/${id}`;
+};
 </script>
 
 <template>
@@ -41,7 +44,12 @@ const backgroundStyle = computed(() => ({
         </p>
         <br />
         <!-- Bottone "Info" in basso a destra -->
-        <button class="btn btn-active btn-ghost absolute bottom-2 right-2">Info</button>
+        <button
+          class="btn btn-active btn-ghost absolute bottom-2 right-2"
+          @click="redirectToTravel(travel.Id)"
+        >
+          Info
+        </button>
       </div>
     </div>
   </div>
