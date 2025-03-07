@@ -9,7 +9,7 @@ const goHome = () => {
 </script>
 
 <template>
-  <div class="navbar bg-gray-900 text-white p-4 shadow-lg">
+  <div class="navbar bg-gray-400 text-white p-4 shadow-lg">
     <div class="navbar-start">
       <img src="@/assets/TripLogo.png" alt="Trip Logo" class="logo" @click="goHome" />
     </div>
@@ -22,7 +22,7 @@ const goHome = () => {
       </div>
       <ul
         tabindex="0"
-        class="menu menu-sm dropdown-content bg-gray-800 text-white rounded-box z-10 mt-3 w-52 p-2 shadow-lg absolute right-0"
+        class="menu menu-sm dropdown-content bg-gray-400 text-white rounded-box z-10 mt-3 w-52 p-2 shadow-lg absolute right-0"
       >
         <li><a class="hover:bg-gray-700 p-2 rounded block">Profile</a></li>
         <li><a class="hover:bg-gray-700 p-2 rounded block">Settings</a></li>
@@ -34,9 +34,11 @@ const goHome = () => {
 
 <style scoped>
 .navbar {
-  background-color: #1f2937;
+  background-color: #005de8;
   color: white;
   transition: background-color 0.3s ease-in-out;
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
 }
 
 .navbar a {

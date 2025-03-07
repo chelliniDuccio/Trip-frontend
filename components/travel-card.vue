@@ -44,10 +44,7 @@ const redirectToTravel = (id) => {
         </p>
         <br />
         <!-- Bottone "Info" in basso a destra -->
-        <button
-          class="btn btn-active btn-ghost absolute bottom-2 right-2"
-          @click="redirectToTravel(travel.Id)"
-        >
+        <button class="btn btn-active btn-ghost absolute bottom-2 right-2" @click="redirectToTravel(travel.Id)">
           Info
         </button>
       </div>

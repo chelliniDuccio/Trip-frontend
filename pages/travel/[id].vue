@@ -5,21 +5,28 @@ import { ref, onMounted } from "vue";
 const route = useRoute();
 const travel = ref(null);
 const error = ref(null);
+const isOpen = ref(false); // Stato per il menu FAB
 
 onMounted(async () => {
   try {
-    const response = await fetch(
+    // Recupero dati viaggio
+    const travelResponse = await fetch(
       `https://localhost:44355/api/Travels?$filter=id eq ${route.params.id}&$expand=Country`
     );
-    if (!response.ok) throw new Error("Errore nel recupero dei dati");
+    if (!travelResponse.ok) throw new Error("Errore nel recupero dei dati");
 
-    const data = await response.json();
-    travel.value = data.length ? data[0] : null;
+    const travelData = await travelResponse.json();
+    travel.value = travelData.length ? travelData[0] : null;
   } catch (err) {
     console.error(err);
     error.value = "Errore nel caricamento dei dati. Riprova più tardi.";
   }
 });
+
+// Funzione per gestire il click sui pulsanti del menu
+const handleClick = (message) => {
+  alert(message);
+};
 </script>
 
 <template>
@@ -28,7 +35,6 @@ onMounted(async () => {
     <div v-if="error" class="text-center text-red-500 font-bold">{{ error }}</div>
 
     <div v-else-if="travel" class="card bg-base-100 shadow-xl p-6 relative">
-      <!-- Sfondo bandiera -->
       <div
         class="absolute inset-0 bg-cover bg-center blur-lg opacity-20"
         :style="{ backgroundImage: `url(${travel.Country?.Flag})` }"
@@ -43,11 +49,20 @@ onMounted(async () => {
         <p class="text-md">
           📅 Fine: {{ new Date(travel.EndDate).toLocaleDateString() }}
         </p>
-        <p class="text-md">📍 Indirizzo Soggiorno: {{ travel.StayAddress }}</p>
         <br />
-        <router-link to="/travel" class="btn btn-neutral mt-4"
-          >Torna ai viaggi</router-link
-        >
+      </div>
+
+      <div class="card bg-base-200 shadow-lg p-4">
+        <iframe
+          v-if="travel.StayURL"
+          :src="travel.StayURL"
+          width="100%"
+          height="300"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+        ></iframe>
+        <p v-else class="text-center text-gray-500">Indirizzo non aggiunto</p>
       </div>
     </div>
 
