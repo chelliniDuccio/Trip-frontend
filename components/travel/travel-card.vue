@@ -7,13 +7,6 @@ const props = defineProps({
   travel: Object,
 });
 
-// Classe dinamica per lo sfondo con la bandiera
-const backgroundImageClass = computed(() =>
-  props.travel?.Country?.Flag
-    ? `[url('${props.travel.Country.Flag}')]`
-    : "bg-gray-700"
-);
-
 const redirectToTravel = (id) => {
   window.location.href = `/travel/${id}`;
 };
@@ -23,11 +16,13 @@ const redirectToTravel = (id) => {
   <div class="p-4 flex justify-center">
     <div
       class="relative w-full max-w-xs shadow-xl rounded-xl overflow-hidden cursor-pointer transition-transform transform hover:scale-105">
+      
       <!-- Sfondo bandiera -->
-      <div :class="[backgroundImageClass, 'absolute inset-0 bg-cover bg-center blur-sm']"></div>
+      <div :style="{ backgroundImage: `url(${props.travel.Country.Flag})` }" 
+           class="absolute inset-0 bg-no-repeat bg-cover bg-center opacity-30"></div>
 
       <!-- Contenuto della card -->
-      <div class="relative p-6 bg-black bg-opacity-40 text-white rounded-xl flex flex-col gap-2">
+      <div class="relative p-6 bg-black bg-opacity-20 text-white rounded-xl flex flex-col gap-2">
         <h1 class="text-2xl font-bold flex items-center">
           <MapPin :size="20" class="mr-2" /> {{ travel.Name }}
         </h1>
@@ -52,3 +47,4 @@ const redirectToTravel = (id) => {
     </div>
   </div>
 </template>
+

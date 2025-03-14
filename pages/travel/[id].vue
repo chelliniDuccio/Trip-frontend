@@ -52,14 +52,12 @@ onMounted(async () => {
           <plane-landing class="w-5 h-5 mr-2" /> Fine: {{ new Date(travel.EndDate).toLocaleDateString() }}
         </p>
       </div>
-
       <br />
       <expenses-table :expenses="expenses" />
-
+      <br />
       <travel-stay-location :stayURL="travel.StayURL" />
-
+      <br />
       <expenses-stats :travelId="route.params.id[0]" />
-
     </div>
     <div v-else class="flex justify-center items-center h-screen">
       <button class="btn btn-neutral">

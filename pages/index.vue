@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import axios from "@/src/axios"; 
+import axios from "@/src/axios";
 import Navbar from "@/components/navbar.vue";
 import TravelCard from "~/components/travel/travel-card.vue";
 import LoadingSpinner from "~/components/loading-spinner.vue";
