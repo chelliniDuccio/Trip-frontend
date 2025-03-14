@@ -1,23 +1,20 @@
 <script setup lang="ts">
 import { useRoute } from "#app";
 import { ref, onMounted } from "vue";
-import { PlaneTakeoff, PlaneLanding, MapPin } from "lucide-vue-next"; // Importiamo l'icona
-import axios from "@/src/axios"; // Importa l'istanza configurata
-import type { Travel, Expense, Users } from "@/models/types";
-import { ExpenceTable } from "@/components/expenses-table.vue";
-import { LoadingSpinner } from "@/components/loading-spinner.vue";
+import { PlaneTakeoff, PlaneLanding, MapPin } from "lucide-vue-next";
+import axios from "@/src/axios";
+import type { Travel, Expense } from "@/models/types";
 
 const route = useRoute();
 const travel = ref<Travel | null>(null);
 const expenses = ref<Expense[]>([]);
-const users = ref<Users[] | null>(null);
 
 const error = ref<string | null>(null);
 
 onMounted(async () => {
   try {
     const travelResponse = await axios.get(
-      `Travels?$filter=id eq ${route.params.id}&$expand=Country` // Usa solo la parte finale dell'URL
+      `Travels?$filter=id eq ${route.params.id}&$expand=Country`
     );
     if (travelResponse.data.length) {
       travel.value = travelResponse.data[0];
@@ -27,11 +24,6 @@ onMounted(async () => {
       `Expenses?$filter=travelId eq ${route.params.id}&$expand=paidByUser($select=Avatar)`
     );
     expenses.value = Array.isArray(expensesResponse.data) ? expensesResponse.data : [];
-
-    const usersResponse = await axios.get(
-      `TravelParticipants?$filter=travelId eq ${route.params.id}&$expand=User`
-    );
-    users.value = Array.isArray(usersResponse.data) ? usersResponse.data : [];
 
   } catch (err) {
     console.error(err);
@@ -59,23 +51,21 @@ onMounted(async () => {
         <p class="text-md flex items-center">
           <plane-landing class="w-5 h-5 mr-2" /> Fine: {{ new Date(travel.EndDate).toLocaleDateString() }}
         </p>
-        <br />
       </div>
 
+      <br />
       <expenses-table :expenses="expenses" />
 
-      <div class="mt-6 p-4 bg-gray-900 rounded-lg shadow-md">
-        <iframe v-if="travel.StayURL" :src="travel.StayURL" width="100%" height="300"
-          class="rounded-lg shadow-lg border border-gray-700" allowfullscreen="" loading="lazy">
-        </iframe>
-        <p v-else class="text-center text-gray-500">Indirizzo non aggiunto</p>
-      </div>
+      <travel-stay-location :stayURL="travel.StayURL" />
+
+      <expenses-stats :travelId="route.params.id[0]" />
 
     </div>
     <div v-else class="flex justify-center items-center h-screen">
       <button class="btn btn-neutral">
         <span class="loading loading-spinner"></span>
         Caricamento...
-    </button>    </div>
+      </button>
+    </div>
   </div>
 </template>

@@ -7,7 +7,7 @@ export interface Travel extends AuditableModel {
     countryId: number;
     country?: Country;
     startDate: Date;
-    endDate?: Date;
+    endDate: Date;
     stayAddress?: string;
     stayURL?: string;
     expenses?: Expense[];
@@ -87,4 +87,16 @@ export enum CategoryType {
     Activities = "Activities", // Attività e intrattenimento
     Shopping = "Shopping", // Acquisti e souvenir
     Other = "Other" // Altro
+}
+
+export interface ExpenseStats {
+    travelExpenses: TravelExpense;
+    totalAmount: number;
+    users: User[];
+}
+
+export interface TravelExpense {
+    amountSum: number;
+    currency: string;
+    currencySymbol: string;
 }

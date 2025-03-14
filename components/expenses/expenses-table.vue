@@ -31,15 +31,12 @@ const formatAmount = (amount: number | undefined) => {
           <tr v-for="expense in expenses" :key="expense.id">
             <td>
               <div
-                class="flex items-center justify-center w-8 h-8 bg-neutral text-neutral-content rounded-full border border-neutral-content"
-              >
+                class="flex items-center justify-center w-8 h-8 bg-neutral text-neutral-content rounded-full border border-neutral-content">
                 <span class="text-xs">{{ expense.PaidByUser?.Avatar }}</span>
               </div>
             </td>
             <td>{{ expense.Description }}</td>
-            <td class="px-6 py-4 text-right whitespace-nowrap">
-              {{ formatAmount(expense.Amount) }} {{ expense.CurrencySymbol }}
-            </td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ formatAmount(expense.Amount) }} {{ expense.CurrencySymbol }}</td>
             <td>
               <button class="btn btn-ghost btn-xs items-center justify-center">
                 <Pencil class="w-5 h-5 text-blue-500" />
