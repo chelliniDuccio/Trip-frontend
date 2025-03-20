@@ -100,3 +100,9 @@ export interface TravelExpense {
     currency: string;
     currencySymbol: string;
 }
+
+export interface CurrencyTableDTO {
+    currency: string;
+    currencySymbol: string;
+    count: number;
+}

@@ -19,30 +19,23 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="error" class="text-center text-red-500 font-bold">{{ error }}</div>
-  <div v-else-if="expenseStats" class="relative z-10">
-    <div class="stat">
-      <div class="stat-title">Spesa Totale</div>
-      <div class="stat-value text-primary">
-        {{ expenseStats.totalAmount }}{{ expenseStats.travelExpenses.currencySymbol }}
-      </div>
+<div class="stats shadow">
+  <div class="stat">
+    <div class="stat-figure text-primary">
     </div>
-    <div class="stat">
-      <div class="stat-title">Spesa Maggiore</div>
-      <div class="stat-value text-secondary">
-        {{ expenseStats.travelExpenses.amountSum }}{{ expenseStats.travelExpenses.currencySymbol }}
-      </div>
-    </div>
-    <div class="stat">
-      <div class="stat-title">Top Pagatore</div>
-      <div class="stat-value" v-if="expenseStats.users.length">
-        <img :src="expenseStats.users[0].avatar" alt="Avatar" class="w-10 h-10 rounded-full inline-block" />
-        {{ expenseStats.users[0].username }}
-      </div>
-      <div v-else class="stat-desc text-secondary">Nessun dato disponibile</div>
-    </div>
+    <div class="stat-title">Spesa Totale</div>
+    <div class="stat-value text-primary">{{expenseStats?.totalAmount}}{{ expenseStats?.travelExpenses.currencySymbol }}</div>
   </div>
-  <div v-else class="flex justify-center items-center h-20">
-    <span class="loading loading-spinner"></span>
+  <div class="stat">
+    <div class="stat-figure text-secondary">
+      <div class="avatar online">
+        <div class="w-16 rounded-full">
+          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        </div>
+      </div>
+    </div>
+    <div class="stat-title">Spesa Maggiore</div>
+    <div class="stat-value">{{ expenseStats?.travelExpenses.amountSum }}{{ expenseStats?.travelExpenses.currencySymbol }}</div>
   </div>
+</div>
 </template>

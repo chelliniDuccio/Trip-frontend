@@ -22,7 +22,7 @@ const redirectToTravel = (id) => {
            class="absolute inset-0 bg-no-repeat bg-cover bg-center opacity-30"></div>
 
       <!-- Contenuto della card -->
-      <div class="relative p-6 bg-black bg-opacity-20 text-white rounded-xl flex flex-col gap-2">
+      <div class="relative p-6 bg-black bg-opacity-10 text-white rounded-xl flex flex-col gap-2">
         <h1 class="text-2xl font-bold flex items-center">
           <MapPin :size="20" class="mr-2" /> {{ travel.Name }}
         </h1>

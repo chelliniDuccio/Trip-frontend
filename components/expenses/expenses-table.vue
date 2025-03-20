@@ -18,7 +18,7 @@ const formatAmount = (amount: number | undefined) => {
 <template>
   <div class="relative z-10 bg-gray-900 rounded-lg shadow-md">
     <!-- Added wrapper div with same styling as stay location -->
-    <div class="h-[300px] overflow-y-auto rounded-lg shadow-lg border border-gray-700 w-full"> <!-- Updated styling -->
+    <div class="h-[230px] overflow-y-auto rounded-lg shadow-lg border border-gray-700 w-full"> <!-- Updated styling -->
       <table v-if="expenses?.length" class="table w-full bg-base-100">
         <thead class="sticky top-0 bg-base-100 z-10">
           <tr>
