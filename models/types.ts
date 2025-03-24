@@ -2,6 +2,15 @@ export interface BaseModel {
     id: number;
 }
 
+export interface AuditableModel extends BaseModel {
+    createdBy: number;
+    creationAt: Date;
+    createdByUser?: User;
+    updatedBy?: number;
+    updatedAt?: Date;
+    updatedByUser?: User;
+}
+
 export interface Travel extends AuditableModel {
     name: string;
     countryId: number;
@@ -22,15 +31,6 @@ export interface User extends BaseModel {
     creationDate: Date;
     updateDate: Date;
     avatar: string;
-}
-
-export interface AuditableModel extends BaseModel {
-    createdBy: number;
-    creationAt: Date;
-    createdByUser?: User;
-    updatedBy?: number;
-    updatedAt?: Date;
-    updatedByUser?: User;
 }
 
 export interface Country extends BaseModel {

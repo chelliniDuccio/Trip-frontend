@@ -9,5 +9,15 @@ export default defineNuxtConfig({
     },
   },
   compatibilityDate: "2025-02-23",
-  components: true
+  components: true,
+  app: {
+    head: {
+      script: [
+        {
+          type: 'module',
+          src: 'https://unpkg.com/cally',
+        },
+      ],
+    },
+  },
 });

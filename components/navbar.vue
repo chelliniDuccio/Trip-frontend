@@ -13,21 +13,20 @@ const goHome = () => {
     <div class="navbar-start">
       <img src="@/assets/TripLogo.png" alt="Trip Logo" class="logo" @click="goHome" />
     </div>
-    <div class="navbar-end"></div>
-    <div class="dropdown dropdown-end relative">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
-        <div class="bg-neutral text-neutral-content w-12 rounded-full">
-          <span>DC</span>
+    <div class="navbar-end">
+      <div class="dropdown dropdown-end relative">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
+          <div class="bg-neutral text-neutral-content w-12 rounded-full">
+            <span>DC</span>
+          </div>
         </div>
+        <ul tabindex="0"
+          class="menu menu-sm dropdown-content bg-gray-400 text-white rounded-box z-10 mt-3 w-52 p-2 shadow-lg absolute right-0">
+          <li><a class="hover:bg-gray-700 p-2 rounded block">Profile</a></li>
+          <li><a class="hover:bg-gray-700 p-2 rounded block">Settings</a></li>
+          <li><a class="hover:bg-gray-700 p-2 rounded block">Logout</a></li>
+        </ul>
       </div>
-      <ul
-        tabindex="0"
-        class="menu menu-sm dropdown-content bg-gray-400 text-white rounded-box z-10 mt-3 w-52 p-2 shadow-lg absolute right-0"
-      >
-        <li><a class="hover:bg-gray-700 p-2 rounded block">Profile</a></li>
-        <li><a class="hover:bg-gray-700 p-2 rounded block">Settings</a></li>
-        <li><a class="hover:bg-gray-700 p-2 rounded block">Logout</a></li>
-      </ul>
     </div>
   </div>
 </template>
@@ -67,7 +66,7 @@ const goHome = () => {
 }
 
 .logo {
-  height: 60px; /* Regola l'altezza come preferisci */
-  width: auto; /* Mantiene le proporzioni */
+  height: 70px;
+  width: auto;
 }
 </style>

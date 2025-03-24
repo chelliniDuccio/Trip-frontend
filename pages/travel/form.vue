@@ -5,28 +5,33 @@ import axios from "@/src/axios";
 import Navbar from "@/components/navbar.vue";
 import LoadingSpinner from "~/components/loading-spinner.vue";
 import type { Travel } from "~/models/types";
+import { Clipboard } from "lucide-vue-next";
+
 
 const router = useRouter();
 
 // Definizione delle props
 const props = defineProps<{ travel?: Travel }>();
 
-// Stato locale per travel
+// Stato locale per il viaggio
 const travel = ref<Travel>({
-  id: props.travel?.id ?? undefined,
+  id: props.travel?.id ?? 0,
   name: props.travel?.name ?? "",
-  startDate: props.travel?.startDate ?? "",
-  endDate: props.travel?.endDate ?? "",
-  countryId: props.travel?.countryId ?? undefined,
-  stayAddress: props.travel?.stayAddress ?? ""
+  startDate: props.travel?.startDate ?? new Date(),
+  endDate: props.travel?.endDate ?? new Date(),
+  countryId: props.travel?.countryId ?? 0,
+  stayAddress: props.travel?.stayAddress ?? "",
+  createdBy: 0,
+  creationAt: props.travel?.creationAt ?? new Date()
 });
 
+// Stati aggiuntivi per la gestione del caricamento e degli errori
 const countries = ref<{ Id: number; name: string; flag: string }[]>([]);
 const isLoading = ref(false);
 const error = ref<string | null>(null);
 
 // Computed per verificare se è un aggiornamento
-const isUpdate = computed(() => travel.value.id !== undefined);
+const isUpdate = computed(() => travel.value.id !== 0);
 
 // Funzione per caricare i paesi
 const fetchCountries = async () => {
@@ -73,6 +78,16 @@ const submitForm = async () => {
     isLoading.value = false;
   }
 };
+
+// Funzione per aggiornare la data
+const updateDate = (date: string, type: 'start' | 'end') => {
+  const selectedDate = new Date(date);
+  if (type === 'start') {
+    travel.value.startDate = selectedDate;
+  } else {
+    travel.value.endDate = selectedDate;
+  }
+};
 </script>
 
 <template>
@@ -96,19 +111,10 @@ const submitForm = async () => {
         <input v-model="travel.name" type="text" class="input input-bordered w-full" required />
       </div>
 
-      <!-- Data Inizio -->
-      <div>
-        <label class="block text-sm font-medium">Data Inizio</label>
-        <input v-model="travel.startDate" type="date" class="input input-bordered w-full" required />
-      </div>
+      <date-picker :v-model="travel.startDate" label="Data Inizio" placeholder="Seleziona la data di inizio" />
 
-      <!-- Data Fine -->
-      <div>
-        <label class="block text-sm font-medium">Data Fine</label>
-        <input v-model="travel.endDate" type="date" class="input input-bordered w-full" required />
-      </div>
+      <date-picker :v-model="travel.endDate" label="Data Fine" placeholder="Seleziona la data di fine" />
 
-      <!-- Selezione Paese -->
       <div>
         <label class="block text-sm font-medium">Paese</label>
         <div class="dropdown w-full">
@@ -123,7 +129,7 @@ const submitForm = async () => {
               <button @click="travel.countryId = country.Id" type="button"
                 class="flex items-center gap-2 w-full text-left p-2 hover:bg-gray-100 rounded-md">
                 <img :src="country.flag" :alt="'Bandiera di ' + country.name"
-                  class="w-6 h-4 object-cover border border-gray-300 rounded" /> 
+                  class="w-6 h-4 object-cover border border-gray-300 rounded" />
                 {{ country.name }}
               </button>
             </li>
@@ -131,31 +137,24 @@ const submitForm = async () => {
         </div>
       </div>
 
-      <!-- Indirizzo con pulsante per incollare -->
       <div>
         <label class="block text-sm font-medium">Indirizzo</label>
         <div class="relative">
           <input v-model="travel.stayAddress" type="text" class="input input-bordered w-full pr-12" required />
           <button type="button" @click="pasteFromClipboard"
-            class="absolute right-2 top-1/2 transform -translate-y-1/2 btn btn-sm btn-outline">
-            📋
+        class="absolute right-2 top-1/2 transform -translate-y-1/2 btn btn-sm btn-outline">
+        <clipboard class="w-5 h-5" />
           </button>
         </div>
       </div>
 
       <!-- Messaggio di errore -->
-      <div v-if="error" class="text-red-500 text-sm font-bold">{{ error }}</div>
+      <div v-if="error" class="text-red-500">{{ error }}</div>
 
-      <!-- Pulsanti -->
-      <div class="flex justify-between items-center mt-4">
-        <button type="submit" class="btn btn-primary" :disabled="isLoading">
-          <span v-if="isLoading" class="loading loading-spinner"></span>
-          {{ isUpdate ? "Aggiorna" : "Crea" }}
-        </button>
-        <button type="button" class="btn btn-secondary" @click="router.push('/travels')">
-          Annulla
-        </button>
-      </div>
+      <!-- Pulsante di submit -->
+      <button type="submit" class="btn btn-primary w-full">
+        {{ isUpdate ? "Aggiorna Viaggio" : "Crea Viaggio" }}
+      </button>
     </form>
   </div>
 </template>

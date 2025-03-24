@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from "#app";
 import { ref, onMounted } from "vue";
-import { PlaneTakeoff, PlaneLanding, MapPin, Plus, X } from "lucide-vue-next";
+import { PlaneTakeoff, PlaneLanding, MapPin } from "lucide-vue-next";
 import axios from "@/src/axios";
 import type { Travel, Expense } from "@/models/types";
 import FloatingButton from "~/components/button/floating-buttons.vue";
