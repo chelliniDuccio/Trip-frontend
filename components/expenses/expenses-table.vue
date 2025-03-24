@@ -18,7 +18,7 @@ const formatAmount = (amount: number | undefined) => {
 <template>
   <div class="relative z-10 bg-gray-900 rounded-lg shadow-md">
     <!-- Added wrapper div with same styling as stay location -->
-    <div class="h-[230px] overflow-y-auto rounded-lg shadow-lg border border-gray-700 w-full"> <!-- Updated styling -->
+    <div class="overflow-y-auto rounded-lg shadow-lg border border-gray-700 w-full"> <!-- Updated styling -->
       <table v-if="expenses?.length" class="table w-full bg-base-100">
         <thead class="sticky top-0 bg-base-100 z-10">
           <tr>
@@ -31,14 +31,13 @@ const formatAmount = (amount: number | undefined) => {
         <tbody>
           <tr v-for="expense in expenses" :key="expense.id">
             <td>
-              <div
-                class="flex items-center justify-center w-8 h-8 bg-neutral text-neutral-content rounded-full border border-neutral-content">
+              <div class="flex items-center justify-center w-8 h-8 bg-neutral text-neutral-content rounded-full border border-neutral-content">
                 <span class="text-xs">{{ expense.PaidByUser?.Avatar }}</span>
               </div>
             </td>
             <td>{{ expense.Description }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ formatAmount(expense.Amount) }} {{ expense.CurrencySymbol }}</td>
-            <td>
+            <td class="px-5 py-4 whitespace-nowrap">{{ formatAmount(expense.Amount) }} {{ expense.CurrencySymbol }}</td>
+            <td class="px-1 py-1">
               <button class="btn btn-ghost btn-xs items-center justify-center">
                 <Pencil class="w-5 h-5 text-blue-500" />
               </button>

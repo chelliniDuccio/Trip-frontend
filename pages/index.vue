@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import axios from "@/src/axios";
 import Navbar from "@/components/navbar.vue";
 import TravelCard from "~/components/travel/travel-card.vue";
+import CircleButton from "~/components/button/circle-button.vue";
 import LoadingSpinner from "~/components/loading-spinner.vue";
 import { Plus, Calculator } from "lucide-vue-next";
 

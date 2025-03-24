@@ -4,6 +4,7 @@ import { ref, onMounted } from "vue";
 import { PlaneTakeoff, PlaneLanding, MapPin, Plus, X } from "lucide-vue-next";
 import axios from "@/src/axios";
 import type { Travel, Expense } from "@/models/types";
+import FloatingButton from "~/components/button/floating-buttons.vue";
 
 const route = useRoute();
 const travel = ref<Travel | null>(null);
@@ -64,6 +65,7 @@ function toggleAdditionalButtons() {
       <travel-stay-location :stayURL="travel.StayURL" />
       <br />
       <expenses-stats :travelId="route.params.id[0]" />
+      <floating-button />
     </div>
 
     <div v-else class="flex justify-center items-center h-screen">
@@ -73,32 +75,5 @@ function toggleAdditionalButtons() {
       </button>
     </div>
 
-    <!-- Bottoni fluttuanti -->
-    <div class="fixed bottom-8 right-8 flex flex-col items-end space-y-3">
-      <!-- Bottoni aggiuntivi -->
-      <transition-group name="fade" tag="div" class="flex flex-col items-end space-y-2">
-        <button v-if="showAdditionalButtons" class="btn btn-primary w-48 shadow-md">Aggiungi Spesa</button>
-        <button v-if="showAdditionalButtons" class="btn btn-secondary w-48 shadow-md">Modifica Viaggio</button>
-        <button v-if="showAdditionalButtons" class="btn btn-accent w-48 shadow-md">Statistiche</button>
-      </transition-group>
-
-      <!-- Pulsante principale -->
-      <button @click="toggleAdditionalButtons"
-        class="btn btn-circle swap swap-rotate shadow-lg hover:shadow-xl transition-all duration-300 bg-blue-600 w-16 h-16 text-white">
-        <input type="checkbox" />
-        <Plus class="swap-off w-8 h-8" />
-        <X class="swap-on w-8 h-8" />
-      </button>
-    </div>
   </div>
 </template>
-
-<style>
-/* Animazione Tailwind */
-.fade-enter-active, .fade-leave-active {
-  @apply transition-all duration-300 ease-out;
-}
-.fade-enter-from, .fade-leave-to {
-  @apply opacity-0 translate-y-2;
-}
-</style>
