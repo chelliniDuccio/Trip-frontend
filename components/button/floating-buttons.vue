@@ -1,12 +1,23 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Plus, X, Users, Wallet, Link } from "lucide-vue-next";
+import { useRouter } from "vue-router"; // Import useRouter
+import { Plus, X, Users, Wallet, Link, Pencil } from "lucide-vue-next";
 import CircleButton from "@/components/button/circle-button.vue";
 
 const showAdditionalButtons = ref(false);
+const travel = ref<Record<string, any>>({}); // Define the travel property
+const router = useRouter(); // Initialize router
 
 function toggleAdditionalButtons() {
     showAdditionalButtons.value = !showAdditionalButtons.value;
+}
+
+// Function to redirect to the form page with travel data
+function redirectToFormWithTravel(travel: Record<string, any>) {
+    router.push({
+        path: "/travel/form",
+        state: { travel }, // Pass the travel object as route state
+    });
 }
 </script>
 
@@ -18,9 +29,11 @@ function toggleAdditionalButtons() {
                 <circle-button :icon="Link" redirect="/travel/form" stacked />
                 <circle-button :icon="Users" redirect="/expenses/form" stacked />
                 <circle-button :icon="Wallet" redirect="/links/form" stacked />
+                <circle-button :icon="Pencil" @click="redirectToFormWithTravel(travel)" 
+                    stacked
+                    />
             </div>
         </transition-group>
-
 
         <!-- Pulsante principale -->
         <button @click="toggleAdditionalButtons" class="main-button">

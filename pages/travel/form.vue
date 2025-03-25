@@ -7,22 +7,22 @@ import LoadingSpinner from "~/components/loading-spinner.vue";
 import type { Travel } from "~/models/types";
 import { Clipboard } from "lucide-vue-next";
 
-
 const router = useRouter();
+const route = useRoute();
 
 // Definizione delle props
-const props = defineProps<{ travel?: Travel }>();
+const travelFromQuery = route.query.travel ? JSON.parse(route.query.travel as string) : null;
 
 // Stato locale per il viaggio
 const travel = ref<Travel>({
-  id: props.travel?.id ?? 0,
-  name: props.travel?.name ?? "",
-  startDate: props.travel?.startDate ?? new Date(),
-  endDate: props.travel?.endDate ?? new Date(),
-  countryId: props.travel?.countryId ?? 0,
-  stayAddress: props.travel?.stayAddress ?? "",
-  createdBy: 0,
-  creationAt: props.travel?.creationAt ?? new Date()
+  id: travelFromQuery?.id ?? 0,
+  name: travelFromQuery?.name ?? "",
+  startDate: travelFromQuery?.startDate ?? new Date(),
+  endDate: travelFromQuery?.endDate ?? new Date(),
+  countryId: travelFromQuery?.countryId ?? 0,
+  stayAddress: travelFromQuery?.stayAddress ?? "",
+  createdBy: 1,
+  creationAt: travelFromQuery?.creationAt ?? new Date()
 });
 
 // Stati aggiuntivi per la gestione del caricamento e degli errori
@@ -41,6 +41,10 @@ const fetchCountries = async () => {
   } catch (err) {
     error.value = "Errore nel caricamento dei paesi.";
   }
+};
+
+const selectCountry = (countryId: number) => {
+  travel.value.countryId = countryId;
 };
 
 // Carica i paesi quando il componente è montato
@@ -71,7 +75,7 @@ const submitForm = async () => {
 
   try {
     await axios.request({ method, url, data: travel.value });
-    router.push("/travels");
+    router.push("/");
   } catch (err) {
     error.value = "Errore nel salvataggio del viaggio.";
   } finally {
@@ -79,15 +83,6 @@ const submitForm = async () => {
   }
 };
 
-// Funzione per aggiornare la data
-const updateDate = (date: string, type: 'start' | 'end') => {
-  const selectedDate = new Date(date);
-  if (type === 'start') {
-    travel.value.startDate = selectedDate;
-  } else {
-    travel.value.endDate = selectedDate;
-  }
-};
 </script>
 
 <template>
@@ -116,37 +111,17 @@ const updateDate = (date: string, type: 'start' | 'end') => {
       <date-picker :v-model="travel.endDate" label="Data Fine" placeholder="Seleziona la data di fine" />
 
       <div>
-        <label class="block text-sm font-medium">Paese</label>
-        <div class="dropdown w-full">
-          <label tabindex="0" class="btn btn-outline w-full flex justify-between">
-            <div class="flex items-center">
-              {{ selectedCountry ? selectedCountry.name : "Seleziona un paese" }}
-            </div>
-          </label>
-          <ul tabindex="0"
-            class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full max-h-60 overflow-auto">
-            <li v-for="country in countries" :key="country.Id">
-              <button @click="travel.countryId = country.Id" type="button"
-                class="flex items-center gap-2 w-full text-left p-2 hover:bg-gray-100 rounded-md">
-                <img :src="country.flag" :alt="'Bandiera di ' + country.name"
-                  class="w-6 h-4 object-cover border border-gray-300 rounded" />
-                {{ country.name }}
-              </button>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div>
         <label class="block text-sm font-medium">Indirizzo</label>
         <div class="relative">
           <input v-model="travel.stayAddress" type="text" class="input input-bordered w-full pr-12" required />
           <button type="button" @click="pasteFromClipboard"
-        class="absolute right-2 top-1/2 transform -translate-y-1/2 btn btn-sm btn-outline">
-        <clipboard class="w-5 h-5" />
+            class="absolute right-2 top-1/2 transform -translate-y-1/2 btn btn-sm btn-outline">
+            <clipboard class="w-5 h-5" />
           </button>
         </div>
       </div>
+
+      <country-selector :selectedCountryId="travel.countryId" :onSelect="selectCountry" />
 
       <!-- Messaggio di errore -->
       <div v-if="error" class="text-red-500">{{ error }}</div>
