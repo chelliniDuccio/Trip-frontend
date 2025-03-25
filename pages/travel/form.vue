@@ -25,6 +25,21 @@ const travel = ref<Travel>({
   creationAt: travelFromQuery?.creationAt ?? new Date()
 });
 
+// Computed properties for date conversion
+const travelEndDate = computed({
+  get: () => travel.value.endDate.toISOString().split("T")[0],
+  set: (value: string) => {
+    travel.value.endDate = new Date(value);
+  }
+});
+
+const travelStartDate = computed({
+  get: () => travel.value.startDate.toISOString().split("T")[0],
+  set: (value: string) => {
+    travel.value.startDate = new Date(value);
+  }
+});
+
 // Stati aggiuntivi per la gestione del caricamento e degli errori
 const countries = ref<{ Id: number; name: string; flag: string }[]>([]);
 const isLoading = ref(false);
@@ -49,11 +64,6 @@ const selectCountry = (countryId: number) => {
 
 // Carica i paesi quando il componente è montato
 onMounted(fetchCountries);
-
-// Computed per trovare il paese selezionato
-const selectedCountry = computed(() => {
-  return countries.value.find((c) => c.Id === travel.value.countryId) || null;
-});
 
 // Funzione per incollare l'indirizzo dalla clipboard
 const pasteFromClipboard = async () => {
@@ -100,15 +110,13 @@ const submitForm = async () => {
 
     <!-- Form -->
     <form v-else @submit.prevent="submitForm" class="space-y-4">
-      <!-- Nome -->
       <div>
         <label class="block text-sm font-medium">Nome</label>
         <input v-model="travel.name" type="text" class="input input-bordered w-full" required />
       </div>
 
-      <date-picker :v-model="travel.startDate" label="Data Inizio" placeholder="Seleziona la data di inizio" />
-
-      <date-picker :v-model="travel.endDate" label="Data Fine" placeholder="Seleziona la data di fine" />
+      <date-picker v-model="travelStartDate" label="Data Inizio" placeholder="Seleziona la data di inizio" />
+      <date-picker v-model="travelEndDate" label="Data Fine" placeholder="Seleziona la data di fine" />
 
       <div>
         <label class="block text-sm font-medium">Indirizzo</label>
