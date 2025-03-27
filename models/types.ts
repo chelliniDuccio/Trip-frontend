@@ -80,15 +80,6 @@ export interface UsefulLink extends AuditableModel {
     category?: CategoryType;
 }
 
-export enum CategoryType {
-    Food = "Food", // Cibo
-    Transport = "Transport", // Trasporto
-    Accommodation = "Accommodation", // Alloggio
-    Activities = "Activities", // Attività e intrattenimento
-    Shopping = "Shopping", // Acquisti e souvenir
-    Other = "Other" // Altro
-}
-
 export interface ExpenseStats {
     travelExpenses: TravelExpense;
     totalAmount: number;
@@ -106,3 +97,53 @@ export interface CurrencyTableDTO {
     currencySymbol: string;
     count: number;
 }
+
+export enum CategoryType {
+    Food = 0,
+    Transport = 1,
+    Accommodation = 2,
+    Activities = 3,
+    Shopping = 4,
+    Fun = 5,
+    Other = 6
+}
+
+import { Utensils, Car, Hotel, Ticket, ShoppingBag, MoreHorizontal, Martini, Bus, BusFront } from "lucide-vue-next";
+
+export const CategoryMap = [
+    {
+        name: CategoryType.Food,
+        icon: Utensils,
+        translation: "Cibo"
+    },
+    {
+        name: CategoryType.Transport,
+        icon: BusFront,
+        translation: "Trasporto"
+    },
+    {
+        name: CategoryType.Accommodation,
+        icon: Hotel,
+        translation: "Alloggio"
+    },
+    {
+        name: CategoryType.Activities,
+        icon: Ticket,
+        translation: "Attività"
+    },
+    {
+        name: CategoryType.Shopping,
+        icon: ShoppingBag,
+        translation: "Spesa"
+    },
+    {
+        name: CategoryType.Fun,
+        icon: Martini,
+        translation: "Divertimento"
+    },
+    {
+        name: CategoryType.Other,
+        icon: MoreHorizontal,
+        translation: "Altro"
+    }
+];

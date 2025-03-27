@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Pencil } from "lucide-vue-next";
+import { Pencil, ExternalLink, Trash2 } from "lucide-vue-next";
 import type { UsefulLink } from "@/models/types";
 import axios from "@/src/axios";
 
@@ -25,8 +25,10 @@ onMounted(async () => {
   }
 });
 
-const formatAmount = (amount: number | undefined) => {
-  return typeof amount === "number" && !isNaN(amount) ? amount.toFixed(2) : "N/A";
+const openLink = (url: string) => {
+  if (url) {
+    window.open(url, "_blank");
+  }
 };
 </script>
 
@@ -36,16 +38,32 @@ const formatAmount = (amount: number | undefined) => {
       <table v-if="usefulLinks?.length" class="table w-full bg-base-100">
         <thead class="sticky top-0 bg-base-100 z-10">
           <tr>
-            <th>Titolo</th>
-            <th>Link</th>
-            <th>Categotia</th>
+            <th class="text-lg font-bold">Link utili</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="usefulLink in usefulLinks" :key="usefulLink.id">
-            <td>{{ usefulLink.title }}</td>
-            <td><a class="link link-primary" :href="usefulLink.url">link</a></td>
-            <td>{{ usefulLink.category }}</td>
+            <!-- Titole + Icon -->
+            <td class="px-4 py-2">
+              <div class="flex items-center space-x-2">
+                <CategoryDisplay :categoryId="usefulLink.category ?? 6" />
+                <span>{{ usefulLink.title }}</span>
+              </div>
+            </td>
+            <!-- Buttons -->
+            <td class="px-4 py-2">
+              <div class="flex justify-end space-x-3">
+                <button type="button" class="btn btn-sm btn-outline btn-primary" @click="openLink(usefulLink.url)">
+                  <external-link class="w-3 h-3" />
+                </button>
+                <button type="button" class="btn btn-sm btn-outline btn-success">
+                  <pencil class="w-3 h-3" />
+                </button>
+                <button type="button" class="btn btn-sm btn-outline btn-error">
+                  <trash2 class="w-3 h-3" />
+                </button>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
