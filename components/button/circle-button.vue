@@ -1,14 +1,3 @@
-<template>
-  <button :class="[
-    'shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center',
-    circle ? 'btn btn-circle' : 'btn',
-    stacked ? '' : 'fixed',
-    positionClasses
-  ]" :style="{ backgroundColor: color, width: size, height: size, zIndex: 9999 }" @click="handleClick">
-    <component :is="icon" class="w-8 h-8 text-white" />
-  </button>
-</template>
-
 <script setup lang="ts">
 import { defineProps, computed } from "vue";
 import { useRouter } from "vue-router";
@@ -50,3 +39,14 @@ const handleClick = () => {
   }
 };
 </script>
+
+<template>
+  <button :class="[
+    'shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center',
+    circle ? 'btn btn-circle' : 'btn',
+    stacked ? '' : 'fixed',
+    positionClasses
+  ]" :style="{ backgroundColor: color, width: size, height: size, zIndex: 9999 }" @click="handleClick">
+    <component :is="icon" class="w-8 h-8 text-white" />
+  </button>
+</template>

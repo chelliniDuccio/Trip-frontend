@@ -1,11 +1,29 @@
 <script setup lang="ts">
 import { Pencil } from "lucide-vue-next";
 import type { Expense } from "@/models/types";
+import axios from "@/src/axios";
 
-const props = defineProps<{
-  expenses: Expense[];
+const props = withDefaults(defineProps<{
+  id: string;
   showEdit?: boolean;
-}>();
+}>(), {
+  showEdit: true,
+});
+
+const expenses = ref<Expense[]>([]);
+
+
+onMounted(async () => {
+  try {
+    const expensesResponse = await axios.get(
+      `Expenses?$filter=travelId eq ${props.id}&$expand=paidByUser($select=Avatar)`
+    );
+    expenses.value = Array.isArray(expensesResponse.data) ? expensesResponse.data : [];
+
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 const formatAmount = (amount: number | undefined) => {
   return typeof amount === "number" && !isNaN(amount) ? amount.toFixed(2) : "N/A";

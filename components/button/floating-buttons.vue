@@ -4,6 +4,10 @@ import { useRouter } from "vue-router"; // Import useRouter
 import { Plus, X, Users, Wallet, Link, Pencil } from "lucide-vue-next";
 import CircleButton from "@/components/button/circle-button.vue";
 
+const props = defineProps({
+    id : String,
+});
+
 const showAdditionalButtons = ref(false);
 const travel = ref<Record<string, any>>({}); // Define the travel property
 const router = useRouter(); // Initialize router
@@ -26,9 +30,9 @@ function redirectToFormWithTravel(travel: Record<string, any>) {
         <!-- Bottoni aggiuntivi -->
         <transition-group v-if="showAdditionalButtons" name="fade" tag="div" class="buttons-group">
             <div class="fixed bottom-28 right-8 flex flex-col space-y-3">
-                <circle-button :icon="Link" redirect="/travel/form" stacked />
-                <circle-button :icon="Users" redirect="/expenses/form" stacked />
-                <circle-button :icon="Wallet" redirect="/links/form" stacked />
+                <circle-button :icon="Link" :redirect="`/travel/link/${props.id}`" stacked />
+                <circle-button :icon="Users" :redirect="`/travel/user/${props.id}`" stacked />
+                <circle-button :icon="Wallet" :redirect="`/travel/expense/${props.id}`" stacked />
                 <circle-button :icon="Pencil" @click="redirectToFormWithTravel(travel)" 
                     stacked
                     />

@@ -3,15 +3,12 @@ import { useRoute } from "#app";
 import { ref, onMounted } from "vue";
 import { PlaneTakeoff, PlaneLanding, MapPin } from "lucide-vue-next";
 import axios from "@/src/axios";
-import type { Travel, Expense } from "@/models/types";
+import type { Travel } from "@/models/types";
 import FloatingButton from "~/components/button/floating-buttons.vue";
 
 const route = useRoute();
 const travel = ref<Travel | null>(null);
-const expenses = ref<Expense[]>([]);
-
 const error = ref<string | null>(null);
-const showAdditionalButtons = ref(false);
 
 onMounted(async () => {
   try {
@@ -22,20 +19,11 @@ onMounted(async () => {
       travel.value = travelResponse.data[0];
     }
 
-    const expensesResponse = await axios.get(
-      `Expenses?$filter=travelId eq ${route.params.id}&$expand=paidByUser($select=Avatar)`
-    );
-    expenses.value = Array.isArray(expensesResponse.data) ? expensesResponse.data : [];
-
   } catch (err) {
     console.error(err);
     error.value = "Errore nel caricamento dei dati. Riprova più tardi.";
   }
 });
-
-function toggleAdditionalButtons() {
-  showAdditionalButtons.value = !showAdditionalButtons.value;
-}
 </script>
 
 <template>
@@ -60,12 +48,11 @@ function toggleAdditionalButtons() {
       </div>
 
       <br />
-      <expenses-table :expenses="expenses" />
+      <expenses-table :id="route.params.id[0]" :show-edit="false" />
       <br />
       <travel-stay-location :stayURL="travel.StayURL" />
       <br />
-      <expenses-stats :travelId="route.params.id[0]" />
-      <floating-button />
+      <floating-button :id="route.params.id" />
     </div>
 
     <div v-else class="flex justify-center items-center h-screen">
