@@ -25,9 +25,9 @@ onMounted(async () => {
   }
 });
 
-const openLink = (url: string) => {
-  if (url) {
-    window.open(url, "_blank");
+const downloadFile = (id: number) => {
+  if (id) {
+    axios.get(`SharedFiles/download/${id}`);
   }
 };
 </script>
@@ -56,7 +56,7 @@ const openLink = (url: string) => {
             <!-- Buttons -->
             <td class="px-4 py-2">
               <div class="flex justify-end space-x-2">
-                <button type="button" class="btn btn-sm btn-outline btn-primary">
+                <button type="button" class="btn btn-sm btn-outline btn-info" @click="downloadFile(sharedFile.id)">
                   <download class="w-4 h-4" />
                 </button>
                 <button type="button" class="btn btn-sm btn-outline btn-success">
@@ -70,7 +70,7 @@ const openLink = (url: string) => {
           </tr>
         </tbody>
       </table>
-      <p v-else class="text-center text-gray-500 p-4">Nessuna spesa registrata</p>
+      <p v-else class="text-center text-gray-500 p-4">Nessuna file registrato</p>
     </div>
   </div>
 </template>

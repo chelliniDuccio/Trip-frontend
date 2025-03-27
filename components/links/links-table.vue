@@ -56,7 +56,7 @@ const openLink = (url: string) => {
             <!-- Buttons -->
             <td class="px-4 py-2">
               <div class="flex justify-end space-x-2">
-                <button type="button" class="btn btn-sm btn-outline btn-primary" @click="openLink(usefulLink.url)">
+                <button type="button" class="btn btn-sm btn-outline btn-info" @click="openLink(usefulLink.url)">
                   <external-link class="w-4 h-4" />
                 </button>
                 <button type="button" class="btn btn-sm btn-outline btn-success">
@@ -70,7 +70,7 @@ const openLink = (url: string) => {
           </tr>
         </tbody>
       </table>
-      <p v-else class="text-center text-gray-500 p-4">Nessuna spesa registrata</p>
+      <p v-else class="text-center text-gray-500 p-4">Nessuna link registrato</p>
     </div>
   </div>
 </template>

@@ -13,7 +13,7 @@ const route = useRoute();
     <file-table :id="route.params.id[0]" />
     <br />
     <div class="flex justify-center space-x-4">
-      <button class="btn btn-outline btn-primary">Aggiungi Link</button>
+      <button class="btn btn-outline btn-info">Aggiungi Link</button>
       <button class="btn btn-outline btn-success" >Aggiungi File</button>
     </div>
   </div>
