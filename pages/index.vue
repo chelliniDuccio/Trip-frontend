@@ -13,7 +13,7 @@ const error = ref(null);
 
 const fetchTravels = async () => {
   try {
-    const response = await axios.get("Travels?$expand=Country"); // Usa l'istanza configurata di Axios
+    const response = await axios.get("Travels/user/1");
     travels.value = response.data ? response.data : [];
   } catch (err) {
     console.error(err.response ? err.response.data : err.message);
@@ -36,7 +36,7 @@ onMounted(fetchTravels);
     <div v-if="error" class="text-center text-red-500 font-bold">{{ error }}</div>
     <!-- Se ci sono dati -->
     <div v-else-if="travels" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
-      <TravelCard v-for="travel in travels" :key="travel.Id" :travel="travel" />
+      <TravelCard v-for="travel in travels" :key="travel.id" :travel="travel" />
     </div>
     <!-- Se non ci sono viaggi disponibili -->
     <div v-else class="text-center text-gray-500 font-semibold mt-10">
