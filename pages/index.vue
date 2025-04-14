@@ -1,15 +1,49 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import jwtDecode from "jwt-decode";
 import axios from "@/src/axios";
+
 import Navbar from "@/components/navbar.vue";
 import TravelCard from "~/components/travel/travel-card.vue";
 import CircleButton from "~/components/button/circle-button.vue";
 import LoadingSpinner from "~/components/loading-spinner.vue";
 import { Plus, Calculator } from "lucide-vue-next";
 
-
+const router = useRouter();
 const travels = ref(null);
 const error = ref(null);
+
+// // Interfaccia per decodificare il token
+// interface JwtPayload {
+//   exp: number;
+//   // puoi aggiungere altri campi come "email", "sub", "role", ecc.
+// }
+
+// Check autenticazione
+const checkAuth = () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    router.push("/login");
+    return false;
+  }
+
+  try {
+    const decoded = jwtDecode<JwtPayload>(token);
+    const isExpired = decoded.exp * 1000 < Date.now();
+    if (isExpired) {
+      localStorage.removeItem("token");
+      router.push("/login");
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error("Token non valido:", e);
+    localStorage.removeItem("token");
+    router.push("/login");
+    return false;
+  }
+};
 
 const fetchTravels = async () => {
   try {
@@ -21,8 +55,13 @@ const fetchTravels = async () => {
   }
 };
 
-onMounted(fetchTravels);
+onMounted(() => {
+  if (checkAuth()) {
+    fetchTravels();
+  }
+});
 </script>
+
 
 <template>
   <Navbar />
