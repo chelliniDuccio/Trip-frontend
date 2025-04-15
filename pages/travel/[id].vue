@@ -33,7 +33,7 @@ onMounted(async () => {
 
     <div v-else-if="travel" class="card bg-base-100 shadow-xl p-6 relative">
       <div class="absolute inset-0 bg-cover bg-center blur-lg opacity-20"
-        :style="{ backgroundImage: `url(${travel.Country?.Flag})` }" />
+        :style="{ backgroundImage: `url(${travel.Country?.flag})` }" />
 
       <div class="relative z-10">
         <h1 class="text-3xl font-bold flex items-center">

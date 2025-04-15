@@ -1,8 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import axios from "@/src/axios";
+import { useCookie } from '#app';
 
 import Navbar from "@/components/navbar.vue";
 import TravelCard from "~/components/travel/travel-card.vue";
@@ -14,40 +15,46 @@ const router = useRouter();
 const travels = ref(null);
 const error = ref(null);
 
-// // Interfaccia per decodificare il token
-// interface JwtPayload {
-//   exp: number;
-//   // puoi aggiungere altri campi come "email", "sub", "role", ecc.
-// }
-
-// Check autenticazione
 const checkAuth = () => {
-  const token = localStorage.getItem("token");
+  const token = useCookie('token').value;
+
   if (!token) {
-    router.push("/auth/login");
+    router.push('/auth/login');
     return false;
   }
 
   try {
-    const decoded = jwtDecode<JwtPayload>(token);
+    const decoded = jwtDecode(token as string);
     const isExpired = decoded.exp * 1000 < Date.now();
     if (isExpired) {
-      localStorage.removeItem("token");
-      router.push("/auth/login");
+      useCookie('token').value = null;
+      router.push('/auth/login');
       return false;
     }
     return true;
   } catch (e) {
-    console.error("Token non valido:", e);
-    localStorage.removeItem("token");
-    router.push("/auth/login");
+    console.error('Token non valido:', e);
+    useCookie('token').value = null;
+    router.push('/auth/login');
     return false;
   }
 };
 
 const fetchTravels = async () => {
   try {
-    const response = await axios.get("Travels/user/1");
+    const userCookie = useCookie('user').value; // Recupera il valore del cookie 'user'
+    if (!userCookie) {
+      throw new Error("User cookie not found.");
+    }
+
+    const userId = userCookie.id; // Estrai l'ID utente
+
+    if (!userId) {
+      throw new Error("User ID not found in the cookie.");
+    }
+
+    // Effettua la richiesta con l'ID utente
+    const response = await axios.get(`Travels/user/${userId}`);
     travels.value = response.data ? response.data : [];
   } catch (err) {
     console.error(err.response ? err.response.data : err.message);
