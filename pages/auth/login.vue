@@ -12,14 +12,16 @@ const router = useRouter();
 const login = async () => {
   try {
     const response = await axios.post('/auth/login', {
-      email: email.value,
+      user: email.value,
       password: password.value,
     });
 
     const token = response.data.token;
+    const userData = response.data.user;
 
     // Salva il token
     useCookie('token').value = token;
+    useCookie('user').value = userData;
 
     // Reindirizza alla home
     router.push('/');

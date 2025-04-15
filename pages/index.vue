@@ -24,7 +24,7 @@ const error = ref(null);
 const checkAuth = () => {
   const token = localStorage.getItem("token");
   if (!token) {
-    router.push("/login");
+    router.push("/auth/login");
     return false;
   }
 
@@ -33,14 +33,14 @@ const checkAuth = () => {
     const isExpired = decoded.exp * 1000 < Date.now();
     if (isExpired) {
       localStorage.removeItem("token");
-      router.push("/login");
+      router.push("/auth/login");
       return false;
     }
     return true;
   } catch (e) {
     console.error("Token non valido:", e);
     localStorage.removeItem("token");
-    router.push("/login");
+    router.push("/auth/login");
     return false;
   }
 };
