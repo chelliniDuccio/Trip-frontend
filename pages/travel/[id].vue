@@ -48,7 +48,7 @@ onMounted(async () => {
       </div>
 
       <br />
-      <expenses-table :id="route.params.id[0]" :show-edit="false" />
+      <expenses-table :id="route.params.id" :show-edit="false" />
       <br />
       <travel-stay-location :stayURL="travel.StayURL" />
       <br />
