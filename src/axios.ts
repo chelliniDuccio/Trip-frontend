@@ -1,8 +1,17 @@
-import axios from "axios";
+import axios from 'axios';
+import { useCookie } from '#app';
 
-const instance = axios.create({
-  baseURL: "https://localhost:44355/api/", // Qui imposti la base URL
-  timeout: 10000, // Imposta un timeout per le richieste (5 secondi in questo caso)
+const api = axios.create({
+  baseURL: 'https://localhost:44355/api/',
+  timeout: 10000,
 });
 
-export default instance;
+api.interceptors.request.use((config) => {
+  const token = useCookie('token').value;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export default api;

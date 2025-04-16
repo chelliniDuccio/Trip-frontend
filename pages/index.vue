@@ -1,19 +1,60 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { jwtDecode } from "jwt-decode";
 import axios from "@/src/axios";
+import { useCookie } from '#app';
+
 import Navbar from "@/components/navbar.vue";
 import TravelCard from "~/components/travel/travel-card.vue";
 import CircleButton from "~/components/button/circle-button.vue";
 import LoadingSpinner from "~/components/loading-spinner.vue";
 import { Plus, Calculator } from "lucide-vue-next";
 
-
+const router = useRouter();
 const travels = ref(null);
 const error = ref(null);
 
+const checkAuth = () => {
+  const token = useCookie('token').value;
+
+  if (!token) {
+    router.push('/auth/login');
+    return false;
+  }
+
+  try {
+    const decoded = jwtDecode(token as string);
+    const isExpired = decoded.exp * 1000 < Date.now();
+    if (isExpired) {
+      useCookie('token').value = null;
+      router.push('/auth/login');
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error('Token non valido:', e);
+    useCookie('token').value = null;
+    router.push('/auth/login');
+    return false;
+  }
+};
+
 const fetchTravels = async () => {
   try {
-    const response = await axios.get("Travels/user/1");
+    const userCookie = useCookie('user').value; // Recupera il valore del cookie 'user'
+    if (!userCookie) {
+      throw new Error("User cookie not found.");
+    }
+
+    const userId = userCookie.id; // Estrai l'ID utente
+
+    if (!userId) {
+      throw new Error("User ID not found in the cookie.");
+    }
+
+    // Effettua la richiesta con l'ID utente
+    const response = await axios.get(`Travels/user/${userId}`);
     travels.value = response.data ? response.data : [];
   } catch (err) {
     console.error(err.response ? err.response.data : err.message);
@@ -21,8 +62,13 @@ const fetchTravels = async () => {
   }
 };
 
-onMounted(fetchTravels);
+onMounted(() => {
+  if (checkAuth()) {
+    fetchTravels();
+  }
+});
 </script>
+
 
 <template>
   <Navbar />

@@ -1,10 +1,23 @@
 <script setup>
 import { useRouter } from "vue-router";
+import { useCookie } from "#app";
 
 const router = useRouter();
 
+// Retrieve the user cookie
+const userCookie = useCookie("user").value;
+let avatar = ""; // Default avatar initials
+
+if (userCookie) {
+  try {
+    avatar = userCookie.avatar || "DC"; // Use the avatar from the cookie or fallback to "DC"
+  } catch (e) {
+    console.error("Error parsing user cookie:", e);
+  }
+}
+
 const goHome = () => {
-  router.push("/"); // Redirect alla home
+  router.push("/"); // Redirect to home
 };
 </script>
 
@@ -16,8 +29,11 @@ const goHome = () => {
     <div class="navbar-end">
       <div class="dropdown dropdown-end relative">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
-          <div class="bg-neutral text-neutral-content w-12 rounded-full">
-            <span>DC</span>
+          <div v-if="avatar.startsWith('http')" class="w-12 rounded-full overflow-hidden">
+            <img :src="avatar" alt="User Avatar" />
+          </div>
+          <div v-else class="bg-neutral text-neutral-content w-12 rounded-full flex items-center justify-center">
+            <span>{{ avatar }}</span>
           </div>
         </div>
         <ul tabindex="0"
